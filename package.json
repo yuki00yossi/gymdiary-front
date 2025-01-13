@@ -82,5 +82,10 @@
   },
   "ignorePatterns": [
     "!.storybook"
-  ]
+  ],
+  "overrides": {
+    "vite": {
+      "rollup": "npm:@rollup/wasm-node"
+    }
+  }
 }
