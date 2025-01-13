@@ -1,3 +1,4 @@
+import path from 'path';
 import { defineConfig as defineViteConfig, mergeConfig } from 'vite';
 import { defineConfig as defineVitestConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
@@ -10,6 +11,11 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 const viteConfig = defineViteConfig({
   plugins: [react(), tsconfigPaths()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 });
 
 const vitestConfig = defineVitestConfig({
