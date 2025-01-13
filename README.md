@@ -13,10 +13,12 @@ Welcome to the Gym Diary client-side repository! This project serves as the clie
 This project is licensed under a custom license. While you are free to fork and use this repository for **personal learning purposes**, any form of **commercial use or distribution is strictly prohibited** without prior written consent.
 
 ### Allowed:
+
 - Forking for personal learning or development purposes.
 - Contributions to the project.
 
 ### Not Allowed:
+
 - Commercial use, such as integrating the code into a paid service or application.
 - Redistributing the project or modified versions for commercial purposes.
 
