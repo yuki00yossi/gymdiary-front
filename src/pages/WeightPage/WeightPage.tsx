@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
@@ -37,6 +39,7 @@ const data = [
 
 export default function WeightPage()
 {
+    const { t } = useTranslation();
     const [weightRecords, setWeightRecords] = useState<any>([]);
 
     const handleWeightSubmit = (e: { preventDefault: () => void; }) => {
@@ -49,32 +52,22 @@ export default function WeightPage()
         setWeightRecords(finalData);
     }, []);
 
-    // const dataWithMovingAverage = calculateMovingAverage(data, 30, 'movingAverage');
 
     return (
         <div className="min-h-screen pt-[3.75rem] pb-[3.5rem] w-full bg-app-bgMain font-sans antialiased tracking-tight">
             <Header />
-            {/* Date selector */}
-            <div className="flex items-center justify-between px-4 py-2">
-                <div className="flex items-center gap-2">
-                <span className="text-lg font-medium">今日</span>
-                </div>
-                <Button variant="ghost" className="hover:text-white hover:text-app-selected font-medium">
-                履歴
-                </Button>
-            </div>
 
             <div className="w-full p-4 md:flex md:gap-4 md:max-w-6xl md:mx-auto">
                 <div className="w-full md:w-1/3 space-y-4">
                     {/* Current Weight Card */}
                     <Card>
                         <div className="p-4">
-                        <div className="space-y-3">
-                            <p className="text-2xl font-bold tracking-wide">現在の体重: <span className="text-main">68.3 kg</span></p>
-                            <p className="text-lg">前回から: <span className="text-app-success font-medium">- 0.2 kg</span></p>
-                            <p className="text-lg">目標まで: <span className="font-medium">残り1.7 kg</span></p>
-                            <p className="text-lg italic mt-2 text-app-success font-medium">順調に進んでいます！</p>
-                        </div>
+                            <div className="space-y-3">
+                                <p className="text-2xl font-bold tracking-wide">{ t('weightPage.currentWeight') }: <span className="text-main">68.3 kg</span></p>
+                                <p className="text-lg">{ t('weightPage.sinceLastTime') }: <span className="text-app-success font-medium">- 0.2 kg</span></p>
+                                <p className="text-lg">{ t('weightPage.untilGoal') }: <span className="font-medium">1.7 kg</span></p>
+                                {/* <p className="text-lg italic mt-2 text-app-success font-medium">順調に進んでいます！</p> */}
+                            </div>
                         </div>
                     </Card>
 
@@ -84,7 +77,7 @@ export default function WeightPage()
                         <div className="flex items-center gap-4">
                             <Input
                             type="number"
-                            placeholder="体重を入力"
+                            placeholder={ t('weightPage.enterWeight') }
                             value={weightRecords}
                             onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setWeightRecords(e.target.value)}
                             className="text-lg bg-app-bgInput border-none placeholder:text-app-textSub font-medium tracking-wide"
@@ -125,14 +118,14 @@ export default function WeightPage()
                                         <Line
                                         type="monotone"
                                         dataKey="weight"
-                                        name='体重'
+                                        name={ t('common.bodyWeight') }
                                         stroke='#333333'
                                         strokeWidth={2}
                                         />
                                         <Line
                                             type="monotone"
                                             dataKey="average7"
-                                            name='移動平均(7日)'
+                                            name={ t('weightPage.movingAverage7') }
                                             stroke='#28A745'
                                             strokeDasharray="5 5"
                                             strokeWidth={2}

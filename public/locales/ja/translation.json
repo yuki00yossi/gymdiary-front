@@ -1,0 +1,27 @@
+{
+    "welcome": "Welcome!",
+    "home": {
+      "title": "Home"
+    },
+    "weightPage": {
+        "currentWeight": "現在の体重",
+        "sinceLastTime": "前回から",
+        "untilGoal": "目標まで",
+        "enterWeight": "体重を入力",
+        "movingAverage7": "移動平均(7日)"
+    },
+    "footer": {
+        "home": "ホーム",
+        "meal": "食事",
+        "body": "体組成",
+        "workout": "トレ"
+    },
+    "sidebar": {
+        "langage": "言語",
+        "privacy": "プライバシーポリシー",
+        "contact": "お問い合わせ"
+    },
+    "common": {
+        "bodyWeight": "体重"
+    }
+}

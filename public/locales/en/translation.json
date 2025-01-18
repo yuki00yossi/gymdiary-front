@@ -1,0 +1,29 @@
+{
+    "welcome": "Welcome!",
+    "home": {
+      "title": "Home"
+    },
+    "weightPage": {
+        "currentWeight": "Current Weight",
+        "sinceLastTime": "Since Last Time",
+        "untilGoal": "Until Goal",
+        "enterWeight": "Enter Weight",
+        "movingAverage7": "Moving Average (7 Days)"
+    },
+    "footer": {
+        "home": "Home",
+        "meal": "Meal",
+        "body": "Body",
+        "workout": "workout"
+    },
+    "sidebar": {
+        "langage": "langage",
+        "privacy": "Privacy policy",
+        "contact": "Contact us"
+    },
+    "common": {
+        "japanese": "japanese",
+        "english": "english",
+        "bodyWeight": "weight"
+    }
+}
