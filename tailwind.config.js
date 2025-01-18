@@ -9,12 +9,35 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        'sans': ['Noto Sans JP', 'sans-serif']
+      },
       colors: {
+        app: {
+          bgMain: '#FFF7E5',
+          bgSub: '#FFE4B3',
+          bgInput: '#FFFFFF',
+
+          textMain: '#333333',
+          textSub: '#666666',
+          success: '#28A745',
+
+          accent: '#C62828',
+          selected: '#1976D2',
+
+          border: '#DDDDDD',
+          borderOnFocus: '#FF9800',
+        },
+        navbar: {
+          main: '#212121',
+          iconNotSelect: '#BDBDBD',
+          iconSelected: '#FF6F31',
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: '#FFE4B3',
+          foreground: 'black',
         },
         popover: {
           DEFAULT: 'hsl(var(--popover))',
