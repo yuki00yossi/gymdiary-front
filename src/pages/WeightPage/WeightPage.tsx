@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Plus } from 'lucide-react';
 import Header from '@/components/Header/Header';
@@ -39,9 +37,7 @@ const data = [
 
 export default function WeightPage()
 {
-    const [date, setDate] = React.useState<Date | undefined>(new Date())
     const [weightRecords, setWeightRecords] = useState<any>([]);
-    const [dispType, setDispType] = useState('calendar');
 
     const handleWeightSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
