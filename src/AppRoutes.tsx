@@ -7,6 +7,7 @@ import {
 import PreSignUpPage from '@/components/PreSignUpPage/PreSignUpPage'
 import WeightPage from '@/pages/WeightPage/WeightPage'
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
+import TrainingRecordPage from './pages/TrainingRecordPage/TrainingRecordPage';
 
 const AppRoutes = () => {
     return (
@@ -14,6 +15,7 @@ const AppRoutes = () => {
             <Routes>
                 <Route path='/' element={<PreSignUpPage />}/>
                 <Route path='/weight' element={<WeightPage />}/>
+                <Route path='/training/record' element={<TrainingRecordPage />}/>
                 <Route path='*' element={<NotFoundPage />}/>
             </Routes>
         </BrowserRouter>

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Footer()
 {
     return (
@@ -5,8 +7,8 @@ export default function Footer()
             <div className="flex justify-around p-4 max-w-6xl mx-auto">
             <div className="text-navbar-iconNotSelect font-medium">ホーム</div>
             <div className="text-navbar-iconNotSelect font-medium">食事</div>
-            <div className="text-navbar-iconSelected font-bold">体重</div>
-            <div className="text-navbar-iconNotSelect font-medium">運動</div>
+            <div className="text-navbar-iconSelected font-bold"><Link to="/weight">体重</Link></div>
+            <div className="text-navbar-iconNotSelect font-medium"><Link to="/training/record">運動</Link></div>
             </div>
         </div>
     );
