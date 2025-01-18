@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator"
 import { AlignLeft, CircleX, Settings } from 'lucide-react';
-import React, { ChangeEvent, ReactEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 

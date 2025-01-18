@@ -2,25 +2,6 @@ import { useState } from 'react'
 
 import { Input } from '@mui/material'
 import { Button } from "@/components/ui/button"
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
-} from "lucide-react"
-
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui/command"
 
 export default function TrainerSignupForm() {
   const [email, setEmail] = useState('')
