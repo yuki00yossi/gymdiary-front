@@ -11,6 +11,9 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 const viteConfig = defineViteConfig({
   plugins: [react(), tsconfigPaths()],
+  server: {
+    port: 3000,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
