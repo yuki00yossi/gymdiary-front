@@ -15,8 +15,10 @@ export default function Footer()
         <div className="fixed bottom-0 left-0 right-0 h-[5rem] bg-navbar-main backdrop-blur-md border-t border-white/20">
             <div className="flex justify-around p-4 max-w-6xl mx-auto">
                 <div className="text-navbar-iconNotSelect text-sm">
-                    <div className=''><IoMdHome size="1.5rem" className='mx-auto' /></div>
-                    <div>{ t('footer.home') }</div>
+                    <Link to="/user/signup" >
+                        <div className=''><IoMdHome size="1.5rem" className='mx-auto' /></div>
+                        <div>{ t('footer.home') }</div>
+                    </Link>
                 </div>
                 <div className="text-navbar-iconNotSelect text-sm">
                     <div className=''><IoRestaurant size="1.5rem" className='mx-auto' /></div>

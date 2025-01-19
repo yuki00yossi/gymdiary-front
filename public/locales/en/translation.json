@@ -21,8 +21,19 @@
         "privacy": "Privacy policy",
         "contact": "Contact us"
     },
+    "user": {
+        "email": "Email",
+        "password": "Password",
+        "passwordConfirm": "Password Confirm",
+        "name": "Display Name"
+    },
     "common": {
-        "save": "保存",
+        "signup": "Signup",
+        "save": "save",
         "bodyWeight": "weight"
+    },
+    "message": {
+        "agreeTerm": "I confirm that I have reviewed the Terms of Use for Gym Diary and agree to them.",
+        "alreadyLogin": "If you are already registered, please log in from here."
     }
 }
