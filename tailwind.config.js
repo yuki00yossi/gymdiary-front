@@ -14,6 +14,8 @@ export default {
       },
       colors: {
         app: {
+          gradientFrom: '#DC0C0C',
+          gradientTo: '#FF8C04',
           bgMain: '#FFF7E5',
           bgSub: '#FFE4B3',
           bgInput: '#FFFFFF',
@@ -22,7 +24,8 @@ export default {
           textSub: '#666666',
           success: '#28A745',
 
-          accent: '#C62828',
+          accent: '#DC0C0C',
+          main: '#',
           selected: '#1976D2',
 
           border: '#DDDDDD',
@@ -44,7 +47,7 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
+          DEFAULT: '#5856D6',
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {

@@ -5,9 +5,9 @@ import {
 } from 'react-router-dom';
 
 import PreSignUpPage from '@/components/PreSignUpPage/PreSignUpPage'
-import WeightPage from '@/pages/WeightPage/WeightPage'
-import NotFoundPage from './components/NotFoundPage/NotFoundPage';
-import TrainingRecordPage from './pages/TrainingRecordPage/TrainingRecordPage';
+import WeightPage from '@/pages/user/WeightPage/WeightPage'
+import NotFoundPage from '@/components/NotFoundPage/NotFoundPage';
+import TrainingRecordPage from '@/pages/user/TrainingRecordPage/TrainingRecordPage';
 
 const AppRoutes = () => {
     return (

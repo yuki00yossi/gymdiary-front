@@ -22,8 +22,7 @@
         "contact": "Contact us"
     },
     "common": {
-        "japanese": "japanese",
-        "english": "english",
+        "save": "保存",
         "bodyWeight": "weight"
     }
 }
