@@ -327,11 +327,15 @@ export default function SignupPage() {
                 setFormData({ ...formData, agreeTerm: !!checked })
               }
             />
-            <Label htmlFor="terms" className="text-sm text-white">
+            <Label
+              role="label_confirm_term"
+              htmlFor="terms"
+              className="text-sm text-white"
+            >
               Gym Diaryの
               <Link to="/terms" className="underline">
                 利用規約
-              </Link>{' '}
+              </Link>
               を確認し、これに同意します。
             </Label>
             <br />
