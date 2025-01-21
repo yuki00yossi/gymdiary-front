@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import SignupPage from './SignupPage';
-import React from 'react';
 
 vi.mock('axios');
 const mockedAxios = axios as vi.Mocked<typeof axios>;
