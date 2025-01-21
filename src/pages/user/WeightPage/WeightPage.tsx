@@ -91,7 +91,7 @@ export default function WeightPage() {
         {/* Graph */}
         <div className="w-full mt-4 md:mt-0 md:w-2/3">
           <div className="w-full">
-            <div className="">
+            <div className="w-full h-[450px]">
               <ResponsiveContainer width="100%">
                 <LineChart data={weightRecords}>
                   <CartesianGrid strokeDasharray="2 2" stroke="#EEE" />
@@ -119,7 +119,7 @@ export default function WeightPage() {
                     dataKey="average7"
                     name={t('weightPage.movingAverage7')}
                     stroke="blue"
-                    // strokeDasharray="5 5"
+                    strokeDasharray="5 5"
                     strokeWidth={2}
                   />
                 </LineChart>
@@ -153,6 +153,8 @@ const calculateMovingAverage = (data: DataItem[]) => {
       average7: Math.floor(average7 * 100) / 100,
     });
   }
+
+  console.log(result);
 
   return result;
 };
