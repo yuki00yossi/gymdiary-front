@@ -26,6 +26,8 @@ jobs:
   deploy:
     needs: lint-and-test
     runs-on: ubuntu-latest
+    environment:
+      name: production
 
     steps:
       - name: Checkout Repository
