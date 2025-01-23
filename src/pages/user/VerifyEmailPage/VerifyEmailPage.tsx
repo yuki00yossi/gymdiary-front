@@ -1,14 +1,45 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import ApiClient from '@/utils/ApiClient';
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { LoadingButton } from '@/components/ui/loadingButton';
 
-export default function SentVerifyEmail() {
-  // const [error, setError] = useState('コードが間違っています。');
+export default function VerifyEmailPage() {
+  const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const codeInput = useRef<HTMLInputElement>(null);
 
-  const clickHandler = () => {
-    console.log(codeInput.current?.value);
+  const clickHandler = async () => {
+    try {
+      setSubmitting(true);
+      const res = await ApiClient.post('/api/email/verify', {
+        code: codeInput.current?.value,
+      });
+
+      if (res.status === 200) {
+        navigate('/user/dashboard');
+        setSubmitting(false);
+      } else {
+        alert('somethig wrong...');
+        setSubmitting(false);
+      }
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        if (e.response && (e.status === 422 || e.status === 400)) {
+          // invalid code error
+          setError('コードが間違っているか、有効期限が切れています。');
+        } else {
+          console.error(e);
+          alert('Unexpected Error Occured...');
+        }
+      } else {
+        alert('Unexpected Error Occured...');
+      }
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -28,10 +59,14 @@ export default function SentVerifyEmail() {
             確認コードを入力して、アカウントを有効化してください。
           </p>
           <Input ref={codeInput} type="text" placeholder="code" name="code" />
-          <p className="text-yellow-300 text-sm pt-1"></p>
-          <Button onClick={clickHandler} className="my-6 w-full">
+          <p className="text-yellow-300 text-sm pt-1">{error}</p>
+          <LoadingButton
+            loading={submitting}
+            onClick={clickHandler}
+            className="my-6 w-full"
+          >
             確認
-          </Button>
+          </LoadingButton>
           <div className="text-sm text-white/80">
             <p>メールが届かない場合は、以下をご確認ください：</p>
             <ul className="list-disc list-inside mt-2">

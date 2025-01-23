@@ -116,7 +116,7 @@ export default function SignupPage() {
     try {
       const res = await ApiClient.post(signupUrl, data);
       if (res.status === 201) {
-        navigate('/user/email/sent-verify-mail');
+        navigate('user/email/verify');
       }
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
