@@ -133,7 +133,6 @@ export default function SignupPage() {
           const data = e.response.data.errors;
 
           Object.keys(data).forEach((key) => {
-            console.log(data[key][0]);
             setErrors((prevErrors) => ({ ...prevErrors, [key]: data[key][0] }));
           });
         } else {
