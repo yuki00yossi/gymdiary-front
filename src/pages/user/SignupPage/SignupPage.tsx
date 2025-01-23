@@ -3,10 +3,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Link, useNavigate } from 'react-router-dom';
+import { LoadingButton } from '@/components/ui/loadingButton';
 
 import axios from 'axios';
-
-import { LoadingButton } from '@/components/ui/loadingButton';
+import ApiClient from '@/utils/ApiClient';
 
 export default function SignupPage() {
   const signupUrl = import.meta.env.VITE_API_ROOT + '/user/signup';
@@ -114,18 +114,7 @@ export default function SignupPage() {
     };
 
     try {
-      const csrf = await axios.get(import.meta.env.VITE_API_ROOT + '/csrf', {
-        withCredentials: true,
-      });
-
-      console.log(csrf);
-      const res = await axios.post(signupUrl, data, {
-        withCredentials: true,
-        headers: {
-          'X-CSRF-TOKEN': csrf.data,
-          Accept: 'application/json',
-        },
-      });
+      const res = await ApiClient.post(signupUrl, data);
       if (res.status === 201) {
         navigate('/user/email/sent-verify-mail');
       }
