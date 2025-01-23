@@ -9,7 +9,7 @@ import axios from 'axios';
 import { LoadingButton } from '@/components/ui/loadingButton';
 
 export default function SignupPage() {
-  const signupUrl = import.meta.env.VITE_API_ROOT + '/user';
+  const signupUrl = import.meta.env.VITE_API_ROOT + '/user/signup';
 
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -114,7 +114,16 @@ export default function SignupPage() {
     };
 
     try {
-      const res = await axios.post(signupUrl, data);
+      await axios.get('http://localhost/sanctum/csrf-cookie', {
+        withCredentials: true,
+      });
+      const res = await axios.post(signupUrl, data, {
+        withCredentials: true,
+        withXSRFToken: true,
+        headers: {
+          Accept: 'application/json',
+        },
+      });
       if (res.status === 201) {
         navigate('/user/email/sent-verify-mail');
       }
