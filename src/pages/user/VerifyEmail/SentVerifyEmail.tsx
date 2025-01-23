@@ -25,7 +25,7 @@ export default function SentVerifyEmail() {
             ご登録いただいたメールアドレスに確認コードを送信しました。
           </p>
           <p className="text-white text-base mb-6">
-            確認コードを入力して、「確認」ボタンを押してください。
+            確認コードを入力して、アカウントを有効化してください。
           </p>
           <Input ref={codeInput} type="text" placeholder="code" name="code" />
           <p className="text-yellow-300 text-sm pt-1"></p>
