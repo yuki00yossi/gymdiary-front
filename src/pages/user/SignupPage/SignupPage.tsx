@@ -114,7 +114,7 @@ export default function SignupPage() {
     };
 
     try {
-      await axios.get('http://localhost/sanctum/csrf-cookie', {
+      await axios.get(import.meta.env.VITE_API_ROOT + '/sanctum/csrf-cookie', {
         withCredentials: true,
       });
       const res = await axios.post(signupUrl, data, {
