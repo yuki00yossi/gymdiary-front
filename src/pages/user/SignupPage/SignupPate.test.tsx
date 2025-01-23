@@ -1,11 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import axios from 'axios';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import SignupPage from './SignupPage';
-
-vi.mock('axios');
-const mockedAxios = axios as vi.Mocked<typeof axios>;
 
 describe('SignupPage Component', () => {
   beforeEach(() => {
