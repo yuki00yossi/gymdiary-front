@@ -114,13 +114,15 @@ export default function SignupPage() {
     };
 
     try {
-      await axios.get(import.meta.env.VITE_API_ROOT + '/sanctum/csrf-cookie', {
+      const csrf = await axios.get(import.meta.env.VITE_API_ROOT + '/csrf', {
         withCredentials: true,
       });
+
+      console.log(csrf);
       const res = await axios.post(signupUrl, data, {
         withCredentials: true,
-        withXSRFToken: true,
         headers: {
+          'X-CSRF-TOKEN': csrf.data,
           Accept: 'application/json',
         },
       });
