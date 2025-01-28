@@ -116,7 +116,7 @@ export default function SignupPage() {
     try {
       const res = await ApiClient.post(signupUrl, data);
       if (res.status === 201) {
-        navigate('user/email/verify');
+        navigate('/user/email/verify');
       }
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
@@ -354,7 +354,10 @@ export default function SignupPage() {
           </LoadingButton>
 
           <div className="text-center">
-            <Link to="/" className="text-sm text-white hover:underline">
+            <Link
+              to="/user/login"
+              className="text-sm text-white hover:underline"
+            >
               既に会員登録がお済みの方は こちら
             </Link>
           </div>
