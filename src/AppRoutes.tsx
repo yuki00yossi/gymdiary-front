@@ -30,7 +30,7 @@ const AppRoutes = () => {
             path="/user/dashboard"
             element={
               <ProtectedRoute allowedUserTypes={['member']}>
-                <DashboardPage />{' '}
+                <DashboardPage />
               </ProtectedRoute>
             }
           />

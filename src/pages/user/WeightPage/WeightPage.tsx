@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Legend,
@@ -15,34 +14,64 @@ import { useTranslation } from 'react-i18next';
 
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
-
-type DataItem = {
-  weight: number;
-  average30?: number;
-  average7?: number;
-};
-// テスト用データ
-const data = [
-  { date: '2024/6/1', weight: 100 },
-  { date: '2024/6/2', weight: 100.8 },
-  { date: '2024/6/3', weight: 90.2 },
-  { date: '2024/6/4', weight: 91.2 },
-  { date: '2024/6/5', weight: 100 },
-];
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ApiClient from '@/utils/ApiClient';
+import { LoadingButton } from '@/components/ui/loadingButton';
+import { TypeWeightRecord } from '@/types/WeightType';
 
 export default function WeightPage() {
   const { t } = useTranslation();
-  const [weightRecords, setWeightRecords] = useState<DataItem[]>([]);
+  const [weightRecords, setWeightRecords] = useState<TypeWeightRecord[]>([]);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleWeightSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-  };
+  const weightUrl = import.meta.env.VITE_API_ROOT + '/api/user/weight';
 
   useEffect(() => {
-    const tmpData = calculateMovingAverage(data);
-    const finalData = calculateMovingAverage(tmpData);
-    setWeightRecords(finalData);
+    fetchWeightData();
   }, []);
+
+  const fetchWeightData = async () => {
+    try {
+      const res = await ApiClient.get(weightUrl);
+      const weights: TypeWeightRecord[] = [];
+      for (let i = 0; i < res.data.length; i++) {
+        weights.push({
+          date: new Date(res.data[i].date).toLocaleDateString().slice(5),
+          weight: res.data[i].weight,
+        });
+      }
+
+      setWeightRecords(weights);
+    } catch {
+      alert('unexpected error...');
+    }
+  };
+
+  const handleWeightSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitting(true);
+    const form = e.target as HTMLFormElement;
+    const weightValue = (form[0] as HTMLInputElement).value;
+
+    try {
+      await ApiClient.post(weightUrl, { weight: weightValue });
+      const res = await ApiClient.get(weightUrl);
+      const weights: TypeWeightRecord[] = [];
+      for (let i = 0; i < res.data.length; i++) {
+        weights.push({
+          date: new Date(res.data[i].date).toLocaleDateString().slice(5),
+          weight: res.data[i].weight,
+        });
+      }
+
+      setWeightRecords(weights);
+    } catch (e: unknown) {
+      console.error(e);
+      alert('Unexpected Error.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen pt-[3.75rem] pb-[3.5rem] w-full bg-gradient-to-t from-app-gradientFrom to-app-gradientTo font-sans antialiased tracking-tight">
@@ -50,8 +79,8 @@ export default function WeightPage() {
 
       <div className="w-full p-4 md:flex md:gap-4 md:max-w-6xl md:mx-auto">
         <div className="w-full md:w-1/3 space-y-4">
-          {/* Current Weight */}
-          <div className="p-4">
+          {/* 現在の体重 */}
+          <div className="py-4">
             <div className="space-y-3 text-white/90">
               <p className="text-2xl font-bold tracking-wide text-white">
                 {t('weightPage.currentWeight')}:{' '}
@@ -65,96 +94,73 @@ export default function WeightPage() {
                 {t('weightPage.untilGoal')}:{' '}
                 <span className="font-medium">1.7 kg</span>
               </p>
-              {/* <p className="text-lg italic mt-2 text-app-success font-medium">順調に進んでいます！</p> */}
             </div>
           </div>
 
-          {/* Weight input */}
-          <form onSubmit={handleWeightSubmit} className="p-4 space-y-4">
+          {/* 体重入力フォーム */}
+          <form onSubmit={handleWeightSubmit} className="pb-4 space-y-4">
             <div className="flex items-center gap-4">
               <Input
                 type="number"
+                inputMode="decimal"
+                step="0.01"
                 placeholder={t('weightPage.enterWeight')}
                 className="text-lg bg-app-bgInput border-none placeholder:text-app-textSub font-medium tracking-wide"
+                required
               />
-              <Button
+              <LoadingButton
+                loading={submitting}
                 type="submit"
-                size="icon"
-                className="bg-primary hover:bg-primary/90 text-white rounded-md px-12"
+                className="bg-primary hover:bg-primary/90 w-[8rem]"
               >
                 {t('common.save')}
-              </Button>
+              </LoadingButton>
             </div>
           </form>
         </div>
 
-        {/* Graph */}
-        <div className="w-full mt-4 md:mt-0 md:w-2/3">
-          <div className="w-full">
-            <div className="w-full h-[450px]">
-              <ResponsiveContainer width="100%">
-                <LineChart data={weightRecords}>
-                  <CartesianGrid strokeDasharray="2 2" stroke="#EEE" />
-                  <XAxis dataKey="date" stroke="#ffffff" />
-                  <YAxis stroke="#ffffff" unit="kg" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#FFFFFF',
-                      border: 'solid 1px gray',
-                      borderRadius: '8px',
-                      color: '#333333',
-                    }}
-                  />
+        <Tabs className="mt-8" defaultValue="day">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="day">日別</TabsTrigger>
+            <TabsTrigger value="week">週別</TabsTrigger>
+            <TabsTrigger value="month">月別</TabsTrigger>
+          </TabsList>
+        </Tabs>
 
-                  <Legend verticalAlign="top" height={36} />
-                  <Line
-                    type="monotone"
-                    dataKey="weight"
-                    name={t('common.bodyWeight')}
-                    stroke="white"
-                    strokeWidth={2}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="average7"
-                    name={t('weightPage.movingAverage7')}
-                    stroke="blue"
-                    strokeDasharray="5 5"
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
+        {/* 横幅をデータ数に応じて動的に設定 */}
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={weightRecords}
+            margin={{ top: 10, right: 20, left: 10, bottom: 0 }}
+          >
+            <CartesianGrid strokeDasharray="2 2" stroke="#EEE" />
+            <XAxis dataKey="date" interval={0} stroke="#ffffff" />
+            <YAxis
+              // orientation="right"
+              stroke="#ffffff"
+              unit="kg"
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#FFFFFF',
+                border: 'solid 1px gray',
+                borderRadius: '8px',
+                color: '#333333',
+              }}
+            />
+            <Legend verticalAlign="top" height={36} />
+            <Line
+              type="monotone"
+              dataKey="weight"
+              name={t('common.bodyWeight')}
+              stroke="black"
+              strokeWidth={3}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
+
       <Footer />
     </div>
   );
 }
-
-const calculateMovingAverage = (data: DataItem[]) => {
-  const result = [];
-  for (let i = 0; i < data.length; i++) {
-    const start30 = Math.max(0, i - 30 + 1);
-    const windowData30 = data.slice(start30, i + 1);
-    const average30 =
-      windowData30.reduce((sum, item) => sum + item.weight, 0) /
-      windowData30.length;
-
-    const start7 = Math.max(0, i - 7 + 1);
-    const windowData7 = data.slice(start7, i + 1);
-    const average7 =
-      windowData7.reduce((sum, item) => sum + item.weight, 0) /
-      windowData7.length;
-    result.push({
-      ...data[i],
-      average30: Math.floor(average30 * 100) / 100,
-      average7: Math.floor(average7 * 100) / 100,
-    });
-  }
-
-  console.log(result);
-
-  return result;
-};

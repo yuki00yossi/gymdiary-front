@@ -1,13 +1,14 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Axiosインスタンスの作成
 const ApiClient = axios.create({
   baseURL: import.meta.env.VITE_API_ROOT ?? 'http://localhost', // デフォルトURLを指定
   withCredentials: true, // Cookieを送信するための設定
   headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json"
-  }
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
 });
 
 // CSRFトークンを管理する変数
@@ -41,6 +42,7 @@ ApiClient.interceptors.request.use(
 );
 
 // レスポンスインターセプターでCSRFトークンをリフレッシュ
+// また、401の場合はログインページにリダイレクト
 ApiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -51,6 +53,11 @@ ApiClient.interceptors.response.use(
       originalRequest._retry = true; // 再試行を防ぐフラグを設定
       await getCsrfToken(); // トークンをリフレッシュ
       return ApiClient(originalRequest); // 元のリクエストを再送
+    }
+
+    if (error.response?.status === 401) {
+      const navigate = useNavigate();
+      navigate('/user/login');
     }
 
     return Promise.reject(error);
