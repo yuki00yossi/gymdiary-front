@@ -1,17 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@/components/ui/loadingButton';
 
 import axios from 'axios';
-import ApiClient from '@/utils/ApiClient';
+import ApiClient, { setupResponseInterceptor } from '@/utils/ApiClient';
 
 export default function LoginPage() {
   const loginUrl = import.meta.env.VITE_API_ROOT + '/api/user/login';
 
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  // 未ログイン時（APIから401が帰ってきた時）にログイン画面に飛ばす設定
+  useEffect(() => {
+    setupResponseInterceptor(navigate);
+  }, [navigate]);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -178,6 +184,14 @@ export default function LoginPage() {
               className="text-sm text-white hover:underline"
             >
               会員登録がまだの方は こちら
+            </Link>
+          </div>
+          <div className="text-center">
+            <Link
+              to="/user/weight"
+              className="text-sm text-white hover:underline"
+            >
+              デバッグ
             </Link>
           </div>
         </form>

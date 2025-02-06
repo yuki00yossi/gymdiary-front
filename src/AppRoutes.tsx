@@ -34,12 +34,21 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/user/weight" element={<WeightPage />} />
+          <Route
+            path="/user/weight"
+            element={
+              <ProtectedRoute allowedUserTypes={['member']}>
+                <WeightPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/user/workouts" element={<DashboardWorkout />} />
 
           {/* ------------- エラールート ------------- */}
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
           {/* ------------- トレーナー用ルート ------------- */}
+
+          {/* ------------- 404ページ ------------- */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>

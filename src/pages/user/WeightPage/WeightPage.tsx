@@ -15,24 +15,40 @@ import { useTranslation } from 'react-i18next';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import ApiClient from '@/utils/ApiClient';
+import ApiClient, { setupResponseInterceptor } from '@/utils/ApiClient';
 import { LoadingButton } from '@/components/ui/loadingButton';
 import { TypeWeightRecord } from '@/types/WeightType';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function WeightPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const [weightRecords, setWeightRecords] = useState<TypeWeightRecord[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
   const weightUrl = import.meta.env.VITE_API_ROOT + '/api/user/weight';
 
   useEffect(() => {
-    fetchWeightData();
+    fetchWeightData('day');
   }, []);
 
-  const fetchWeightData = async () => {
+  useEffect(() => {
+    setupResponseInterceptor(navigate);
+  }, [navigate]);
+
+  const tabChangeHandler = async (value: string) => {
+    fetchWeightData(value);
+  };
+
+  const fetchWeightData = async (span: string) => {
+    const urls: { [key: string]: string } = {
+      day: import.meta.env.VITE_API_ROOT + '/api/user/weight',
+      week: import.meta.env.VITE_API_ROOT + '/api/user/weight/weekly',
+    };
     try {
-      const res = await ApiClient.get(weightUrl);
+      const res = await ApiClient.get(urls[span]);
       const weights: TypeWeightRecord[] = [];
       for (let i = 0; i < res.data.length; i++) {
         weights.push({
@@ -42,8 +58,16 @@ export default function WeightPage() {
       }
 
       setWeightRecords(weights);
-    } catch {
-      alert('unexpected error...');
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        if (e.response && e.status === 401) {
+          console.error('need authentication.');
+        } else {
+          alert('Unexpected Error Occured...');
+        }
+      } else {
+        alert('Unexpected Error Occured...');
+      }
     }
   };
 
@@ -119,11 +143,15 @@ export default function WeightPage() {
           </form>
         </div>
 
-        <Tabs className="mt-8" defaultValue="day">
-          <TabsList className="grid w-full grid-cols-3">
+        <Tabs
+          className="mt-8"
+          defaultValue="day"
+          onValueChange={tabChangeHandler}
+        >
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="day">日別</TabsTrigger>
             <TabsTrigger value="week">週別</TabsTrigger>
-            <TabsTrigger value="month">月別</TabsTrigger>
+            {/* <TabsTrigger value="month">月別</TabsTrigger> */}
           </TabsList>
         </Tabs>
 

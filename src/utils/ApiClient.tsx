@@ -31,7 +31,7 @@ ApiClient.interceptors.request.use(
   async (config) => {
     // POST、PUT、DELETEリクエストの場合にCSRFトークンを追加
     if (['post', 'put', 'delete'].includes(config.method ?? '') && !csrfToken) {
-      await getCsrfToken();
+      csrfToken = await getCsrfToken();
     }
     if (csrfToken) {
       config.headers['X-CSRF-TOKEN'] = csrfToken;
@@ -43,25 +43,27 @@ ApiClient.interceptors.request.use(
 
 // レスポンスインターセプターでCSRFトークンをリフレッシュ
 // また、401の場合はログインページにリダイレクト
-ApiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+export const setupResponseInterceptor = (
+  navigate: ReturnType<typeof useNavigate>
+) => {
+  ApiClient.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
 
-    // 419エラー（CSRFトークンの有効期限切れ）に対応
-    if (error.response?.status === 419 && !originalRequest._retry) {
-      originalRequest._retry = true; // 再試行を防ぐフラグを設定
-      await getCsrfToken(); // トークンをリフレッシュ
-      return ApiClient(originalRequest); // 元のリクエストを再送
+      if (error.response?.status === 419 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        await getCsrfToken();
+        return ApiClient(originalRequest);
+      }
+
+      if (error.response?.status === 401) {
+        navigate('/user/login');
+      }
+
+      return Promise.reject(error);
     }
-
-    if (error.response?.status === 401) {
-      const navigate = useNavigate();
-      navigate('/user/login');
-    }
-
-    return Promise.reject(error);
-  }
-);
+  );
+};
 
 export default ApiClient;
